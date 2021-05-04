@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.smushytaco.legacy_display.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ChunksToRebuildMixin",
+    "CurrentFPSMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

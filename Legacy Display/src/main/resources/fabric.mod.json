@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy_display",
+  "version": "${version}",
+  "name": "Legacy Display",
+  "description": "Bring back the Minecraft alpha display! You can now have an fps counter, chunk update counter, Minecraft version number, and you're coordinates be displayed and it's fully customizable in the config!",
+  "authors": [
+    "SmushyTaco"
+  ],
+  "contact": {
+    "homepage": "https://www.smushytaco.com/",
+    "issues": "https://www.curseforge.com/minecraft/mc-mods/legacy-display/issues/",
+    "sources": "https://github.com/realSmushyTaco/Legacy-Display/"
+  },
+  "license": "GNU Lesser General Public License version 3 (LGPLv3)",
+  "icon": "assets/legacy_display/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "com.smushytaco.legacy_display.LegacyDisplay"
+      }
+    ],
+    "modmenu": [
+      "com.smushytaco.legacy_display.configuration_support.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "legacy_display.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "fabric-language-kotlin": ">=1.5.0+kotlin.1.4.31",
+    "minecraft": "1.16.x",
+    "cloth-config2": ">=4.11.19",
+    "modmenu": ">=1.9.0+build.27"
+  }
+}
