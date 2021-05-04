@@ -2,9 +2,11 @@
   "required": true,
   "package": "com.smushytaco.legacy_display.mixins",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
+  "client": [
     "ChunksToRebuildMixin",
-    "CurrentFPSMixin"
+    "CurrentFPSMixin",
+    "TitleScreenAccessors",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
