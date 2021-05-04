@@ -22,7 +22,8 @@ object LegacyDisplay : ModInitializer {
     }
     private var chunkUpdateCount = 0
     const val MOD_ID = "legacy_display"
-    private lateinit var config: ModConfiguration
+    lateinit var config: ModConfiguration
+        private set
     private lateinit var coroutine: Job
     private val minecraftVersion = SharedConstants.getGameVersion().name
     private const val color = 16777215

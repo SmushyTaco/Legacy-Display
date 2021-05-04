@@ -3,7 +3,7 @@
   "id": "legacy_display",
   "version": "${version}",
   "name": "Legacy Display",
-  "description": "Bring back the Minecraft alpha display! You can now have an fps counter, chunk update counter, Minecraft version number, and you're coordinates be displayed and it's fully customizable in the config!",
+  "description": "Bring back the Minecraft legacy display! You can now have the Legacy Title Screen, the legacy FPS Display, the legacy Chunk Update Display, the legacy Minecraft Version Display, and a Coordinates Display and it's fully customizable in the config!",
   "authors": [
     "SmushyTaco"
   ],
