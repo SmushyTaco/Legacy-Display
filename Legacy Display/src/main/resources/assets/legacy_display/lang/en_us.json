@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.legacy_display.title": "Legacy Display Configuration",
+  "text.autoconfig.legacy_display.option.enableMinecraftKeywordDisplay": "Enable Minecraft Keyword Display",
+  "text.autoconfig.legacy_display.option.enableVersionDisplay": "Enable Version Display",
+  "text.autoconfig.legacy_display.option.enableFPSDisplay": "Enable FPS Display",
+  "text.autoconfig.legacy_display.option.enableChunkUpdateDisplay": "Enable Chunk Update Display",
+  "text.autoconfig.legacy_display.option.enableCoordinateDisplay": "Enable Coordinate Display",
+  "text.autoconfig.legacy_display.option.enablePositionKeywordInCoordinateDisplay": "Enable Position Keyword In Coordinate Display"
+}
