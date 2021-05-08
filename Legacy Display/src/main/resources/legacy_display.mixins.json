@@ -5,8 +5,8 @@
   "client": [
     "ChunksToRebuildMixin",
     "CurrentFPSMixin",
-    "TitleScreenAccessors",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "LevelLoadingScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
