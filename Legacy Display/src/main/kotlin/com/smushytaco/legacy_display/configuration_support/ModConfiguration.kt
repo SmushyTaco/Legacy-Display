@@ -7,6 +7,8 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment
 class ModConfiguration: ConfigData {
     @Comment("Default value is yes. If set to yes the title screen background will be the background image provided by your resource pack (Dirt by default).")
     val enableLegacyTitleScreen = true
+    @Comment("Default value is yes. If set to yes the loading screen will be changed to the loading screen from Minecraft 1.2.5. If set to no it won't.")
+    val enableLegacyLoadingScreen = true
     @Comment("Default value is yes. If set to yes the keyword \"Minecraft\" will be displayed in the top left corner. If set to no it won't.")
     val enableMinecraftKeywordDisplay = true
     @Comment("Default value is yes. If set to yes the version number will be displayed in the top left corner. If set to no it won't.")

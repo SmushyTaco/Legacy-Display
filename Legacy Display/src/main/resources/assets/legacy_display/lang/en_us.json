@@ -1,6 +1,7 @@
 {
   "text.autoconfig.legacy_display.title": "Legacy Display Configuration",
   "text.autoconfig.legacy_display.option.enableLegacyTitleScreen": "Enable Legacy Title Screen",
+  "text.autoconfig.legacy_display.option.enableLegacyLoadingScreen": "Enable Legacy Loading Screen",
   "text.autoconfig.legacy_display.option.enableMinecraftKeywordDisplay": "Enable Minecraft Keyword Display",
   "text.autoconfig.legacy_display.option.enableVersionDisplay": "Enable Version Display",
   "text.autoconfig.legacy_display.option.enableFPSDisplay": "Enable FPS Display",
