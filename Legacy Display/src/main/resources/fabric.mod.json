@@ -32,9 +32,9 @@
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
-    "fabric-language-kotlin": ">=1.5.0+kotlin.1.4.31",
+    "fabric-language-kotlin": ">=1.6.0+kotlin.1.5.0",
     "minecraft": "1.16.x",
-    "cloth-config2": ">=4.11.19",
-    "modmenu": ">=1.9.0+build.27"
+    "cloth-config2": ">=4.11.24",
+    "modmenu": ">=1.14.13+build.22"
   }
 }
