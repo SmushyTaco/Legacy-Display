@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-@Mixin(TitleScreen.class)
+@Mixin(value = TitleScreen.class, priority = 1001)
 public abstract class TitleScreenMixin extends Screen {
     protected TitleScreenMixin(Text title) {
         super(title);
