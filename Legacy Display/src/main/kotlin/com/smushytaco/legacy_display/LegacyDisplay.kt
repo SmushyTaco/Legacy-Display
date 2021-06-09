@@ -1,16 +1,16 @@
 package com.smushytaco.legacy_display
-import com.smushytaco.legacy_display.DoubleFloorExtensionFunction.floor
+import com.smushytaco.legacy_display.configuration_support.ModConfiguration
+import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunksToRebuild
+import com.smushytaco.legacy_display.mixins.CurrentFPSMixin
 import kotlinx.coroutines.*
 import me.shedaniel.autoconfig.AutoConfig
 import me.shedaniel.autoconfig.annotation.Config
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer
-import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunksToRebuild
+import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.SharedConstants
 import net.minecraft.client.MinecraftClient
-import com.smushytaco.legacy_display.configuration_support.ModConfiguration
-import com.smushytaco.legacy_display.mixins.CurrentFPSMixin
-import net.fabricmc.api.ClientModInitializer
+import java.util.*
 object LegacyDisplay : ClientModInitializer {
     private fun startRepeatingJob(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
@@ -57,7 +57,16 @@ object LegacyDisplay : ClientModInitializer {
                 if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
             }
             if (config.enableCoordinateDisplay) {
-                MinecraftClient.getInstance().inGameHud.fontRenderer.drawWithShadow(matrixStack, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}${MinecraftClient.getInstance().player?.x?.floor?.toInt()}, ${MinecraftClient.getInstance().player?.y?.floor?.toInt()}, ${MinecraftClient.getInstance().player?.z?.floor?.toInt()}",
+                val unformattedCoordinates = String.format(Locale.ROOT, "%.3f %.5f %.3f", MinecraftClient.getInstance().cameraEntity?.x, MinecraftClient.getInstance().cameraEntity?.y, MinecraftClient.getInstance().cameraEntity?.z)
+                val coordinateList = unformattedCoordinates.split(".", " ")
+                val formattedCoordinates = StringBuilder()
+                for (i in coordinateList.indices) {
+                    if (i % 2 == 0) {
+                        formattedCoordinates.append(coordinateList[i])
+                        if (i != coordinateList.indices.last - 1) formattedCoordinates.append(", ")
+                    }
+                }
+                MinecraftClient.getInstance().inGameHud.fontRenderer.drawWithShadow(matrixStack, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
                     2.0F, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26.0F else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14.0F else 2.0F, TEXT_COLOR)
             }
         })
