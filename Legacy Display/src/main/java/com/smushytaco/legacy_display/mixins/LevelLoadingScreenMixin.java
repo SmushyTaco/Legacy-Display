@@ -22,14 +22,14 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     @Shadow
     private WorldGenerationProgressTracker progressProvider;
     @Shadow
-    private long field_19101;
+    private long lastNarrationTime;
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void hookRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (!LegacyDisplay.INSTANCE.getConfig().getEnableLegacyLoadingScreen()) return;
         renderBackground(matrices);
         long l = Util.getMeasuringTimeMs();
-        if (l - field_19101 > 2000L) {
-            this.field_19101 = l;
+        if (l - lastNarrationTime > 2000L) {
+            this.lastNarrationTime = l;
             narrateScreenIfNarrationEnabled(true);
         }
         LevelLoadingScreenMixinLogic.INSTANCE.hookRenderLogic(matrices, progressProvider, width, height, textRenderer);

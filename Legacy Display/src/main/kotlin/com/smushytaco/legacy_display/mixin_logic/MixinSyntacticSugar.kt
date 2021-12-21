@@ -1,8 +1,8 @@
 package com.smushytaco.legacy_display.mixin_logic
-import net.minecraft.client.render.WorldRenderer
-import net.minecraft.client.render.chunk.ChunkBuilder
-import com.smushytaco.legacy_display.mixins.ChunksToRebuildMixin
+import com.smushytaco.legacy_display.mixins.ChunkUpdatersMixin
+import net.minecraft.client.world.ClientWorld
+import java.util.*
 object MixinSyntacticSugar {
-    val WorldRenderer.chunksToRebuild: Set<ChunkBuilder.BuiltChunk>
-        get() = (this as ChunksToRebuildMixin).chunksToRebuild
+    val ClientWorld.chunkUpdaters: Deque<Runnable>
+        get() = (this as ChunkUpdatersMixin).chunkUpdaters
 }
