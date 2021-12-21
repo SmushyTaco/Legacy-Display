@@ -1,9 +1,9 @@
 {
   "required": true,
   "package": "com.smushytaco.legacy_display.mixins",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "client": [
-    "ChunksToRebuildMixin",
+    "ChunkUpdatersMixin",
     "CurrentFPSMixin",
     "TitleScreenMixin",
     "LevelLoadingScreenMixin"

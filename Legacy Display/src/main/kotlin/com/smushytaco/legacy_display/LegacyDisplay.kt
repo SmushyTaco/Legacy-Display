@@ -1,6 +1,6 @@
 package com.smushytaco.legacy_display
 import com.smushytaco.legacy_display.configuration_support.ModConfiguration
-import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunksToRebuild
+import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunkUpdaters
 import com.smushytaco.legacy_display.mixins.CurrentFPSMixin
 import kotlinx.coroutines.*
 import me.shedaniel.autoconfig.AutoConfig
@@ -15,7 +15,7 @@ object LegacyDisplay : ClientModInitializer {
     private fun startRepeatingJob(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
-                chunkUpdateCount = MinecraftClient.getInstance().worldRenderer?.chunksToRebuild?.size ?: 0
+                chunkUpdateCount = MinecraftClient.getInstance().world?.chunkUpdaters?.size ?: 0
                 delay(125L)
             }
         }
@@ -35,7 +35,7 @@ object LegacyDisplay : ClientModInitializer {
         HudRenderCallback.EVENT.register(HudRenderCallback { matrixStack, _ ->
             if (MinecraftClient.getInstance().options.debugEnabled) return@HudRenderCallback
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
-                MinecraftClient.getInstance().inGameHud.fontRenderer.drawWithShadow(matrixStack,
+                MinecraftClient.getInstance().inGameHud.textRenderer.drawWithShadow(matrixStack,
                     "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",
                     2.0F, 2.0F, TEXT_COLOR)
             }
@@ -49,7 +49,7 @@ object LegacyDisplay : ClientModInitializer {
                 } else {
                     if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
                 }
-                MinecraftClient.getInstance().inGameHud.fontRenderer.drawWithShadow(matrixStack,
+                MinecraftClient.getInstance().inGameHud.textRenderer.drawWithShadow(matrixStack,
                     "${if (config.enableFPSDisplay) "${CurrentFPSMixin.getCurrentFPS()} fps" else ""}${if (config.enableFPSDisplay && config.enableChunkUpdateDisplay) ", " else ""}${if (config.enableChunkUpdateDisplay) "$chunkUpdateCount chunk update${if (chunkUpdateCount != 1) "s" else ""}" else ""}",
                     2.0F, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14.0F else 2.0F, TEXT_COLOR
                 )
@@ -66,7 +66,7 @@ object LegacyDisplay : ClientModInitializer {
                         if (i != coordinateList.indices.last - 1) formattedCoordinates.append(", ")
                     }
                 }
-                MinecraftClient.getInstance().inGameHud.fontRenderer.drawWithShadow(matrixStack, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
+                MinecraftClient.getInstance().inGameHud.textRenderer.drawWithShadow(matrixStack, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
                     2.0F, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26.0F else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14.0F else 2.0F, TEXT_COLOR)
             }
         })
