@@ -1,38 +1,25 @@
 plugins {
     id("fabric-loom")
-    val kotlinVersion: String by System.getProperties()
-    kotlin("jvm").version(kotlinVersion)
+    kotlin("jvm").version(System.getProperty("kotlin_version"))
 }
-base {
-    val archivesBaseName: String by project
-    archivesName.set(archivesBaseName)
-}
-val modVersion: String by project
-version = modVersion
-val mavenGroup: String by project
-group = mavenGroup
+base { archivesName.set(project.extra["archives_base_name"] as String) }
+version = project.extra["mod_version"] as String
+group = project.extra["maven_group"] as String
 repositories {
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/")
 }
 dependencies {
-    val minecraftVersion: String by project
-    minecraft("com.mojang", "minecraft", minecraftVersion)
-    val yarnMappings: String by project
-    mappings("net.fabricmc", "yarn", yarnMappings, null, "v2")
-    val loaderVersion: String by project
-    modImplementation("net.fabricmc", "fabric-loader", loaderVersion)
-    val fabricVersion: String by project
-    modImplementation("net.fabricmc.fabric-api", "fabric-api", fabricVersion)
-    val fabricKotlinVersion: String by project
-    modImplementation("net.fabricmc", "fabric-language-kotlin", fabricKotlinVersion)
-    val modMenuVersion: String by project
-    modImplementation("com.terraformersmc", "modmenu", modMenuVersion)
-    val clothConfigVersion: String by project
-    modApi("me.shedaniel.cloth", "cloth-config-fabric", clothConfigVersion) { exclude("net.fabricmc.fabric-api") }
+    minecraft("com.mojang", "minecraft", project.extra["minecraft_version"] as String)
+    mappings("net.fabricmc", "yarn", project.extra["yarn_mappings"] as String, null, "v2")
+    modImplementation("net.fabricmc", "fabric-loader", project.extra["loader_version"] as String)
+    modImplementation("net.fabricmc.fabric-api", "fabric-api", project.extra["fabric_version"] as String)
+    modImplementation("net.fabricmc", "fabric-language-kotlin", project.extra["fabric_language_kotlin_version"] as String)
+    modImplementation("com.terraformersmc", "modmenu", project.extra["mod_menu_version"] as String)
+    modApi("me.shedaniel.cloth", "cloth-config-fabric", project.extra["cloth_config_version"] as String) { exclude("net.fabricmc.fabric-api") }
 }
 tasks {
-    val javaVersion = JavaVersion.VERSION_17
+    val javaVersion = JavaVersion.toVersion((project.extra["java_version"] as String).toInt())
     withType<JavaCompile> {
         options.encoding = "UTF-8"
         sourceCompatibility = javaVersion.toString()
@@ -40,10 +27,10 @@ tasks {
         options.release.set(javaVersion.toString().toInt())
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions { jvmTarget = javaVersion.toString() } }
-    jar { from("LICENSE") { rename { "${it}_${base.archivesName}" } } }
+    jar { from("LICENSE") { rename { "${it}_${base.archivesName.get()}" } } }
     processResources {
-        inputs.property("version", project.version)
-        filesMatching("fabric.mod.json") { expand(mutableMapOf("version" to project.version)) }
+        filesMatching("fabric.mod.json") { expand(mutableMapOf("version" to project.extra["mod_version"] as String, "fabricloader" to project.extra["loader_version"] as String, "fabric_api" to project.extra["fabric_version"] as String, "fabric_language_kotlin" to project.extra["fabric_language_kotlin_version"] as String, "minecraft" to project.extra["minecraft_version"] as String, "java" to project.extra["java_version"] as String, "modmenu" to project.extra["mod_menu_version"] as String, "clothconfig" to project.extra["cloth_config_version"] as String)) }
+        filesMatching("*.mixins.json") { expand(mutableMapOf("java" to project.extra["java_version"] as String)) }
     }
     java {
         toolchain { languageVersion.set(JavaLanguageVersion.of(javaVersion.toString())) }
