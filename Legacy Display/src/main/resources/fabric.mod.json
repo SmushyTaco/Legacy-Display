@@ -30,14 +30,14 @@
     "legacy_display.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.9",
-    "fabric-api": "*",
-    "fabric-language-kotlin": ">=1.8.2+kotlin.1.7.10",
-    "minecraft": "~1.19",
-    "cloth-config2": ">=8.0.75",
-    "java": ">=17"
+    "fabricloader": ">=${fabricloader}",
+    "fabric-api": ">=${fabric_api}",
+    "fabric-language-kotlin": ">=${fabric_language_kotlin}",
+    "minecraft": ">=${minecraft}",
+    "java": ">=${java}",
+    "cloth-config2": ">=${clothconfig}"
   },
   "suggests": {
-    "modmenu": ">=4.0.6"
+    "modmenu": ">=${modmenu}"
   }
 }
