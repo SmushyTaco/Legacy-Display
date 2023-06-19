@@ -5,7 +5,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(MinecraftClient.class)
 public interface CurrentFPSMixin {
     @Accessor("currentFps")
-    static int getCurrentFPS() {
-        throw new AssertionError();
-    }
+    static int getCurrentFPS() { throw new AssertionError(); }
 }

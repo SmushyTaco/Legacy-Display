@@ -32,12 +32,12 @@ object LegacyDisplay : ClientModInitializer {
             GsonConfigSerializer(definition, configClass)
         }
         config = AutoConfig.getConfigHolder(ModConfiguration::class.java).config
-        HudRenderCallback.EVENT.register(HudRenderCallback { matrixStack, _ ->
+        HudRenderCallback.EVENT.register(HudRenderCallback { context, _ ->
             if (MinecraftClient.getInstance().options.debugEnabled) return@HudRenderCallback
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
-                MinecraftClient.getInstance().inGameHud.textRenderer.drawWithShadow(matrixStack,
+                context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
                     "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",
-                    2.0F, 2.0F, TEXT_COLOR)
+                    2, 2, TEXT_COLOR)
             }
             if (config.enableFPSDisplay || config.enableChunkUpdateDisplay) {
                 if (config.enableChunkUpdateDisplay) {
@@ -49,9 +49,9 @@ object LegacyDisplay : ClientModInitializer {
                 } else {
                     if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
                 }
-                MinecraftClient.getInstance().inGameHud.textRenderer.drawWithShadow(matrixStack,
+                context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
                     "${if (config.enableFPSDisplay) "${CurrentFPSMixin.getCurrentFPS()} fps" else ""}${if (config.enableFPSDisplay && config.enableChunkUpdateDisplay) ", " else ""}${if (config.enableChunkUpdateDisplay) "$chunkUpdateCount chunk update${if (chunkUpdateCount != 1) "s" else ""}" else ""}",
-                    2.0F, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14.0F else 2.0F, TEXT_COLOR
+                    2, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14 else 2, TEXT_COLOR
                 )
             } else {
                 if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
@@ -66,8 +66,8 @@ object LegacyDisplay : ClientModInitializer {
                         if (i != coordinateList.indices.last - 1) formattedCoordinates.append(", ")
                     }
                 }
-                MinecraftClient.getInstance().inGameHud.textRenderer.drawWithShadow(matrixStack, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
-                    2.0F, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26.0F else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14.0F else 2.0F, TEXT_COLOR)
+                context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
+                    2, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26 else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14 else 2, TEXT_COLOR)
             }
         })
     }
