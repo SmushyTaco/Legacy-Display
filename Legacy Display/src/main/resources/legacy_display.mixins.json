@@ -5,8 +5,11 @@
   "client": [
     "ChunkUpdatersMixin",
     "CurrentFPSMixin",
-    "TitleScreenMixin",
-    "LevelLoadingScreenMixin"
+    "DrawContextMixin",
+    "EntryListWidgetAccessor",
+    "LevelLoadingScreenMixin",
+    "ScreenAccessor",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

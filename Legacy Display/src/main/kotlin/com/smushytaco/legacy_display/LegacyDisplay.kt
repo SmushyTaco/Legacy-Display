@@ -10,6 +10,7 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.SharedConstants
 import net.minecraft.client.MinecraftClient
+import net.minecraft.util.Identifier
 import java.util.*
 object LegacyDisplay : ClientModInitializer {
     private fun startRepeatingJob(): Job {
@@ -22,6 +23,13 @@ object LegacyDisplay : ClientModInitializer {
     }
     private var chunkUpdateCount = 0
     const val MOD_ID = "legacy_display"
+    val MENU_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/menu_background.png")
+    val INWORLD_MENU_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/inworld_menu_background.png")
+    val HEADER_SEPARATOR_TEXTURE = Identifier(MOD_ID, "textures/gui/header_separator.png")
+    val FOOTER_SEPARATOR_TEXTURE = Identifier(MOD_ID, "textures/gui/footer_separator.png")
+    val MENU_LIST_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/menu_list_background.png")
+    val INWORLD_MENU_LIST_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/inworld_menu_list_background.png")
+    val TAB_HEADER_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/tab_header_background.png")
     lateinit var config: ModConfiguration
         private set
     private lateinit var coroutine: Job
@@ -33,7 +41,7 @@ object LegacyDisplay : ClientModInitializer {
         }
         config = AutoConfig.getConfigHolder(ModConfiguration::class.java).config
         HudRenderCallback.EVENT.register(HudRenderCallback { context, _ ->
-            if (MinecraftClient.getInstance().options.debugEnabled) return@HudRenderCallback
+            if (MinecraftClient.getInstance().debugHud.shouldShowDebugHud()) return@HudRenderCallback
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
                 context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
                     "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",

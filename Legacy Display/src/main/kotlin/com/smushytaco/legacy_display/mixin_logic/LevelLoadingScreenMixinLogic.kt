@@ -2,7 +2,7 @@ package com.smushytaco.legacy_display.mixin_logic
 import com.smushytaco.legacy_display.LegacyDisplay
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.WorldGenerationProgressTracker
+import net.minecraft.server.WorldGenerationProgressTracker
 import net.minecraft.util.math.MathHelper
 object LevelLoadingScreenMixinLogic {
     fun hookRenderLogic(context: DrawContext, progressProvider: WorldGenerationProgressTracker, width: Int, height: Int, textRenderer: TextRenderer) {
