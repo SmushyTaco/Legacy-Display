@@ -5,8 +5,10 @@ import me.shedaniel.autoconfig.annotation.Config
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment
 @Config(name = LegacyDisplay.MOD_ID)
 class ModConfiguration: ConfigData {
-    @Comment("Default value is yes. If set to yes the title screen background will be the background image provided by your resource pack (Dirt by default).")
+    @Comment("Default value is yes. If set to yes the title screen background will be the old dirt background.")
     val enableLegacyTitleScreen = true
+    @Comment("Default value is yes. If set to yes all backgrounds will be the old dirt background.")
+    val enableLegacyDirtScreen = true
     @Comment("Default value is yes. If set to yes the loading screen will be changed to the loading screen from Minecraft 1.2.5. If set to no it won't.")
     val enableLegacyLoadingScreen = true
     @Comment("Default value is yes. If set to yes the keyword \"Minecraft\" will be displayed in the top left corner. If set to no it won't.")
