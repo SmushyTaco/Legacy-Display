@@ -23,13 +23,13 @@ object LegacyDisplay : ClientModInitializer {
     }
     private var chunkUpdateCount = 0
     const val MOD_ID = "legacy_display"
-    val MENU_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/menu_background.png")
-    val INWORLD_MENU_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/inworld_menu_background.png")
-    val HEADER_SEPARATOR_TEXTURE = Identifier(MOD_ID, "textures/gui/header_separator.png")
-    val FOOTER_SEPARATOR_TEXTURE = Identifier(MOD_ID, "textures/gui/footer_separator.png")
-    val MENU_LIST_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/menu_list_background.png")
-    val INWORLD_MENU_LIST_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/inworld_menu_list_background.png")
-    val TAB_HEADER_BACKGROUND_TEXTURE = Identifier(MOD_ID, "textures/gui/tab_header_background.png")
+    val MENU_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/menu_background.png")
+    val INWORLD_MENU_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/inworld_menu_background.png")
+    val HEADER_SEPARATOR_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/header_separator.png")
+    val FOOTER_SEPARATOR_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/footer_separator.png")
+    val MENU_LIST_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/menu_list_background.png")
+    val INWORLD_MENU_LIST_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/inworld_menu_list_background.png")
+    val TAB_HEADER_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/tab_header_background.png")
     lateinit var config: ModConfiguration
         private set
     private lateinit var coroutine: Job
