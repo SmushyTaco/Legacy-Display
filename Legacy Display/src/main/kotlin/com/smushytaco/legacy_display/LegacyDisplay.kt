@@ -1,11 +1,7 @@
 package com.smushytaco.legacy_display
-import com.smushytaco.legacy_display.configuration_support.ModConfiguration
 import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunkUpdaters
 import com.smushytaco.legacy_display.mixins.CurrentFPSMixin
 import kotlinx.coroutines.*
-import me.shedaniel.autoconfig.AutoConfig
-import me.shedaniel.autoconfig.annotation.Config
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.SharedConstants
@@ -30,16 +26,11 @@ object LegacyDisplay : ClientModInitializer {
     val MENU_LIST_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/menu_list_background.png")
     val INWORLD_MENU_LIST_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/inworld_menu_list_background.png")
     val TAB_HEADER_BACKGROUND_TEXTURE: Identifier = Identifier.of(MOD_ID, "textures/gui/tab_header_background.png")
-    lateinit var config: ModConfiguration
-        private set
+    val config = ModConfig.createAndLoad()
     private lateinit var coroutine: Job
     private val minecraftVersion = SharedConstants.getGameVersion().name
     const val TEXT_COLOR = 16777215
     override fun onInitializeClient() {
-        AutoConfig.register(ModConfiguration::class.java) { definition: Config, configClass: Class<ModConfiguration> ->
-            GsonConfigSerializer(definition, configClass)
-        }
-        config = AutoConfig.getConfigHolder(ModConfiguration::class.java).config
         HudRenderCallback.EVENT.register(HudRenderCallback { context, _ ->
             if (MinecraftClient.getInstance().debugHud.shouldShowDebugHud()) return@HudRenderCallback
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {

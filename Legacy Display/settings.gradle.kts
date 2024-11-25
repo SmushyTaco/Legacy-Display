@@ -8,5 +8,6 @@ pluginManagement {
     plugins {
         id("fabric-loom").version(settings.extra["loom_version"] as String)
         kotlin("jvm").version(settings.extra["kotlin_version"] as String)
+        id("com.google.devtools.ksp").version(settings.extra["ksp_version"] as String)
     }
 }
