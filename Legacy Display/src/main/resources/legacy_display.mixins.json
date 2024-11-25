@@ -8,9 +8,10 @@
     "DrawContextMixin",
     "EntryListWidgetAccessor",
     "LevelLoadingScreenMixin",
+    "OwoLibCompatibilityMixin",
     "ScreenAccessor",
-    "TitleScreenMixin",
-    "OwoLibCompatibilityMixin"
+    "ScreenMixin",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
