@@ -9,9 +9,11 @@
     "EntryListWidgetAccessor",
     "LevelLoadingScreenMixin",
     "ScreenAccessor",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "OwoLibCompatibilityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": []
 }
