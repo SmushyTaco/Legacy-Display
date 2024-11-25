@@ -1,7 +1,6 @@
 package com.smushytaco.legacy_display
 import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunkUpdaters
 import com.smushytaco.legacy_display.mixins.CurrentFPSMixin
-import com.smushytaco.legacy_display.mixins.ScreenAccessor
 import io.wispforest.owo.ui.core.OwoUIDrawContext
 import io.wispforest.owo.ui.core.ParentComponent
 import io.wispforest.owo.ui.core.Surface
@@ -14,7 +13,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.util.Identifier
 import java.util.*
 object LegacyDisplay : ClientModInitializer {
-    val OWO_LIB_LEGACY_BACKGROUND = Surface { context: OwoUIDrawContext, component: ParentComponent -> Screen.renderBackgroundTexture(context, if (MinecraftClient.getInstance().world == null) Screen.MENU_BACKGROUND_TEXTURE else ScreenAccessor.getINWORLD_MENU_BACKGROUND_TEXTURE(), component.x(), component.y(), 0.0F, 0.0F, component.width(), component.height()) }
+    val OWO_LIB_LEGACY_BACKGROUND = Surface { context: OwoUIDrawContext, component: ParentComponent -> Screen.renderBackgroundTexture(context, Screen.MENU_BACKGROUND_TEXTURE, component.x(), component.y(), 0.0F, 0.0F, component.width(), component.height()) }
     private fun startRepeatingJob(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
