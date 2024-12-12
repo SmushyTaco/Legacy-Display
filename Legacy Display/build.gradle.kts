@@ -1,9 +1,13 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("fabric-loom")
     kotlin("jvm")
     id("com.google.devtools.ksp")
+    id("com.modrinth.minotaur")
+    id("net.darkhax.curseforgegradle")
+    id("co.uzzu.dotenv.gradle")
 }
 base.archivesName = project.extra["archives_base_name"] as String
 version = project.extra["mod_version"] as String
@@ -32,7 +36,12 @@ tasks {
     withType<JavaExec>().configureEach { defaultCharacterEncoding = "UTF-8" }
     withType<Javadoc>().configureEach { options.encoding = "UTF-8" }
     withType<Test>().configureEach { defaultCharacterEncoding = "UTF-8" }
-    withType<KotlinCompile>().configureEach { compilerOptions.jvmTarget = JvmTarget.valueOf("JVM_$javaVersion") }
+    withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            extraWarnings = true
+            jvmTarget = JvmTarget.valueOf("JVM_$javaVersion")
+        }
+    }
     jar { from("LICENSE") { rename { "${it}_${base.archivesName.get()}" } } }
     processResources {
         filesMatching("fabric.mod.json") { expand(mutableMapOf("version" to project.extra["mod_version"] as String, "fabricloader" to project.extra["loader_version"] as String, "fabric_api" to project.extra["fabric_version"] as String, "fabric_language_kotlin" to project.extra["fabric_language_kotlin_version"] as String, "minecraft" to project.extra["minecraft_version"] as String, "java" to project.extra["java_version"] as String, "owo_version" to project.extra["owo_version"] as String)) }
@@ -43,5 +52,27 @@ tasks {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
         withSourcesJar()
+    }
+    register<TaskPublishCurseForge>("publishCurseForge") {
+        disableVersionDetection()
+        apiToken = env.CURSEFORGE_TOKEN.value
+        val file = upload(478650, remapJar)
+        file.displayName = "[${project.extra["minecraft_version"] as String}] Legacy Display"
+        file.addEnvironment("Client")
+        file.changelog = ""
+        file.releaseType = "release"
+        file.addModLoader("Fabric")
+        file.addGameVersion(project.extra["minecraft_version"] as String)
+    }
+}
+modrinth {
+    token.set(env.MODRINTH_TOKEN.value)
+    projectId.set("legacy-display")
+    uploadFile.set(tasks.remapJar)
+    gameVersions.addAll(project.extra["minecraft_version"] as String)
+    versionName.set("[${project.extra["minecraft_version"] as String}] Legacy Display")
+    dependencies {
+        required.project("fabric-api", "fabric-language-kotlin", "owo-lib")
+        optional.project("modmenu")
     }
 }
