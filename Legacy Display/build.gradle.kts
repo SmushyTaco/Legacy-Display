@@ -55,7 +55,7 @@ tasks {
     }
     register<TaskPublishCurseForge>("publishCurseForge") {
         disableVersionDetection()
-        apiToken = env.CURSEFORGE_TOKEN.value
+        apiToken = env.fetch("CURSEFORGE_TOKEN", "")
         val file = upload(478650, remapJar)
         file.displayName = "[${project.extra["minecraft_version"] as String}] Legacy Display"
         file.addEnvironment("Client")
@@ -66,7 +66,7 @@ tasks {
     }
 }
 modrinth {
-    token.set(env.MODRINTH_TOKEN.value)
+    token.set(env.fetch("MODRINTH_TOKEN", ""))
     projectId.set("legacy-display")
     uploadFile.set(tasks.remapJar)
     gameVersions.addAll(project.extra["minecraft_version"] as String)
