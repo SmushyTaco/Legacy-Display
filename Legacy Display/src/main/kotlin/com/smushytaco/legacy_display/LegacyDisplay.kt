@@ -6,7 +6,8 @@ import io.wispforest.owo.ui.core.ParentComponent
 import io.wispforest.owo.ui.core.Surface
 import kotlinx.coroutines.*
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback
+import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer
 import net.minecraft.SharedConstants
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
@@ -36,42 +37,44 @@ object LegacyDisplay : ClientModInitializer {
     private val minecraftVersion = SharedConstants.getGameVersion().name
     const val TEXT_COLOR = 16777215
     override fun onInitializeClient() {
-        HudRenderCallback.EVENT.register(HudRenderCallback { context, _ ->
-            if (MinecraftClient.getInstance().debugHud.shouldShowDebugHud()) return@HudRenderCallback
-            if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
-                context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
-                    "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",
-                    2, 2, TEXT_COLOR)
-            }
-            if (config.enableFPSDisplay || config.enableChunkUpdateDisplay) {
-                if (config.enableChunkUpdateDisplay) {
-                    if (LegacyDisplay::coroutine.isInitialized) {
-                        if (!coroutine.isActive) coroutine = startRepeatingJob()
+        HudLayerRegistrationCallback.EVENT.register(HudLayerRegistrationCallback { layeredDrawer ->
+            layeredDrawer.attachLayerAfter(IdentifiedLayer.DEBUG, Identifier.of(MOD_ID, "hud")) {context, _ ->
+                if (MinecraftClient.getInstance().debugHud.shouldShowDebugHud()) return@attachLayerAfter
+                if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
+                    context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
+                        "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",
+                        2, 2, TEXT_COLOR)
+                }
+                if (config.enableFPSDisplay || config.enableChunkUpdateDisplay) {
+                    if (config.enableChunkUpdateDisplay) {
+                        if (LegacyDisplay::coroutine.isInitialized) {
+                            if (!coroutine.isActive) coroutine = startRepeatingJob()
+                        } else {
+                            coroutine = startRepeatingJob()
+                        }
                     } else {
-                        coroutine = startRepeatingJob()
+                        if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
                     }
+                    context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
+                        "${if (config.enableFPSDisplay) "${CurrentFPSMixin.getCurrentFPS()} fps" else ""}${if (config.enableFPSDisplay && config.enableChunkUpdateDisplay) ", " else ""}${if (config.enableChunkUpdateDisplay) "$chunkUpdateCount chunk update${if (chunkUpdateCount != 1) "s" else ""}" else ""}",
+                        2, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14 else 2, TEXT_COLOR
+                    )
                 } else {
                     if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
                 }
-                context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
-                    "${if (config.enableFPSDisplay) "${CurrentFPSMixin.getCurrentFPS()} fps" else ""}${if (config.enableFPSDisplay && config.enableChunkUpdateDisplay) ", " else ""}${if (config.enableChunkUpdateDisplay) "$chunkUpdateCount chunk update${if (chunkUpdateCount != 1) "s" else ""}" else ""}",
-                    2, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14 else 2, TEXT_COLOR
-                )
-            } else {
-                if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
-            }
-            if (config.enableCoordinateDisplay) {
-                val unformattedCoordinates = String.format(Locale.ROOT, "%.3f %.5f %.3f", MinecraftClient.getInstance().cameraEntity?.x, MinecraftClient.getInstance().cameraEntity?.y, MinecraftClient.getInstance().cameraEntity?.z)
-                val coordinateList = unformattedCoordinates.split(".", " ")
-                val formattedCoordinates = StringBuilder()
-                for (i in coordinateList.indices) {
-                    if (i % 2 == 0) {
-                        formattedCoordinates.append(coordinateList[i])
-                        if (i != coordinateList.indices.last - 1) formattedCoordinates.append(", ")
+                if (config.enableCoordinateDisplay) {
+                    val unformattedCoordinates = String.format(Locale.ROOT, "%.3f %.5f %.3f", MinecraftClient.getInstance().cameraEntity?.x, MinecraftClient.getInstance().cameraEntity?.y, MinecraftClient.getInstance().cameraEntity?.z)
+                    val coordinateList = unformattedCoordinates.split(".", " ")
+                    val formattedCoordinates = StringBuilder()
+                    for (i in coordinateList.indices) {
+                        if (i % 2 == 0) {
+                            formattedCoordinates.append(coordinateList[i])
+                            if (i != coordinateList.indices.last - 1) formattedCoordinates.append(", ")
+                        }
                     }
+                    context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
+                        2, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26 else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14 else 2, TEXT_COLOR)
                 }
-                context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
-                    2, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26 else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14 else 2, TEXT_COLOR)
             }
         })
     }
