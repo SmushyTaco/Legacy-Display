@@ -38,7 +38,7 @@ object LegacyDisplay : ClientModInitializer {
     const val TEXT_COLOR = 16777215
     override fun onInitializeClient() {
         HudLayerRegistrationCallback.EVENT.register(HudLayerRegistrationCallback { layeredDrawer ->
-            layeredDrawer.attachLayerAfter(IdentifiedLayer.DEBUG, Identifier.of(MOD_ID, "hud")) {context, _ ->
+            layeredDrawer.attachLayerAfter(IdentifiedLayer.DEBUG, Identifier.of(MOD_ID, "hud")) { context, _ ->
                 if (MinecraftClient.getInstance().debugHud.shouldShowDebugHud()) return@attachLayerAfter
                 if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
                     context.drawTextWithShadow(MinecraftClient.getInstance().inGameHud.textRenderer,
