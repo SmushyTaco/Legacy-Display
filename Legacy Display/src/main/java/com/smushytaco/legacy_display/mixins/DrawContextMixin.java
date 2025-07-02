@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(DrawContext.class)
 public class DrawContextMixin {
-    @ModifyVariable(method = "drawTexturedQuad", at = @At(value = "HEAD"), argsOnly = true)
+    @ModifyVariable(method = "drawTexturedQuad(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIIIFFFFI)V", at = @At(value = "HEAD"), argsOnly = true)
     private Identifier hookDrawTexturedQuad(Identifier sprite) {
         if (!LegacyDisplay.INSTANCE.getConfig().getEnableLegacyDirtScreen()) return sprite;
         if (sprite.equals(Screen.MENU_BACKGROUND_TEXTURE)) return LegacyDisplay.INSTANCE.getMENU_BACKGROUND_TEXTURE();
