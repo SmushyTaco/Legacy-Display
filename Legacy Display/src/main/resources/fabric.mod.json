@@ -12,7 +12,7 @@
     "issues": "https://www.curseforge.com/minecraft/mc-mods/legacy-display/issues/",
     "sources": "https://github.com/SmushyTaco/Legacy-Display/"
   },
-  "license": "GNU Lesser General Public License version 3 (LGPLv3)",
+  "license": "Apache-2.0",
   "icon": "assets/legacy_display/icon.png",
   "environment": "client",
   "entrypoints": {
