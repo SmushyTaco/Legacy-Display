@@ -1,5 +1,6 @@
 package com.smushytaco.legacy_display
-import io.wispforest.owo.config.annotation.*
+import io.wispforest.owo.config.annotation.Config
+import io.wispforest.owo.config.annotation.Modmenu
 @Modmenu(modId = LegacyDisplay.MOD_ID)
 @Config(name = LegacyDisplay.MOD_ID, wrapperName = "ModConfig")
 @Suppress("UNUSED")
