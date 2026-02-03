@@ -1,8 +1,8 @@
 package com.smushytaco.legacy_display
 import com.smushytaco.legacy_display.mixin_logic.MixinSyntacticSugar.chunkUpdaters
 import com.smushytaco.legacy_display.mixins.CurrentFPSMixin
-import io.wispforest.owo.ui.core.OwoUIDrawContext
-import io.wispforest.owo.ui.core.ParentComponent
+import io.wispforest.owo.ui.core.OwoUIGraphics
+import io.wispforest.owo.ui.core.ParentUIComponent
 import io.wispforest.owo.ui.core.Surface
 import kotlinx.coroutines.*
 import net.fabricmc.api.ClientModInitializer
@@ -10,10 +10,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.SharedConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import java.util.*
 object LegacyDisplay : ClientModInitializer {
-    val OWO_LIB_LEGACY_BACKGROUND = Surface { context: OwoUIDrawContext, component: ParentComponent -> Screen.renderMenuBackgroundTexture(context, Screen.MENU_BACKGROUND, component.x(), component.y(), 0.0F, 0.0F, component.width(), component.height()) }
+    val OWO_LIB_LEGACY_BACKGROUND = Surface { context: OwoUIGraphics, component: ParentUIComponent -> Screen.renderMenuBackgroundTexture(context, Screen.MENU_BACKGROUND, component.x(), component.y(), 0.0F, 0.0F, component.width(), component.height()) }
     private fun startRepeatingJob(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
@@ -24,19 +24,19 @@ object LegacyDisplay : ClientModInitializer {
     }
     private var chunkUpdateCount = 0
     const val MOD_ID = "legacy_display"
-    val MENU_BACKGROUND_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/menu_background.png")
-    val INWORLD_MENU_BACKGROUND_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/inworld_menu_background.png")
-    val HEADER_SEPARATOR_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/header_separator.png")
-    val FOOTER_SEPARATOR_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/footer_separator.png")
-    val MENU_LIST_BACKGROUND_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/menu_list_background.png")
-    val INWORLD_MENU_LIST_BACKGROUND_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/inworld_menu_list_background.png")
-    val TAB_HEADER_BACKGROUND_TEXTURE: ResourceLocation = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/tab_header_background.png")
+    val MENU_BACKGROUND_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/menu_background.png")
+    val INWORLD_MENU_BACKGROUND_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/inworld_menu_background.png")
+    val HEADER_SEPARATOR_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/header_separator.png")
+    val FOOTER_SEPARATOR_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/footer_separator.png")
+    val MENU_LIST_BACKGROUND_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/menu_list_background.png")
+    val INWORLD_MENU_LIST_BACKGROUND_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/inworld_menu_list_background.png")
+    val TAB_HEADER_BACKGROUND_TEXTURE: Identifier = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/tab_header_background.png")
     val config = ModConfig.createAndLoad()
     private lateinit var coroutine: Job
     private val minecraftVersion = SharedConstants.getCurrentVersion().name()
     const val TEXT_COLOR = -1
     override fun onInitializeClient() {
-        HudElementRegistry.addLast(ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud")) { context, _ ->
+        HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "hud")) { context, _ ->
             if (Minecraft.getInstance().debugOverlay.showDebugScreen()) return@addLast
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
                 context.drawString(

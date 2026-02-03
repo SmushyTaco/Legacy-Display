@@ -21,6 +21,7 @@ group = mavenGroup.get()
 repositories {
     maven("https://maven.wispforest.io")
     maven("https://maven.kosmx.dev/")
+    maven("https://jitpack.io")
 }
 dependencies {
     minecraft(libs.minecraft)

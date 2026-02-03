@@ -2,11 +2,11 @@
 ##########################################################################
 # Plugins
 # Check this on https://github.com/FabricMC/fabric-loom/releases/latest/
-loom = "1.14-SNAPSHOT"
+loom = "1.15-SNAPSHOT"
 # Check this on https://kotlinlang.org/docs/releases.html
 kotlin = "2.3.0"
 # Check this on https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/
-ksp = "2.3.4"
+ksp = "2.3.5"
 # Check this on https://plugins.gradle.org/plugin/com.modrinth.minotaur/
 minotaur = "2.8.10"
 # Check this on https://plugins.gradle.org/plugin/net.darkhax.curseforgegradle/
@@ -21,15 +21,15 @@ java = "21"
 gradleJava = "21"
 ##########################################################################
 # Dependencies
-minecraft = "1.21.10"
+minecraft = "1.21.11"
 # Check this on https://github.com/FabricMC/fabric-loader/releases/latest
 loader = "0.18.4"
 # Check this on https://modrinth.com/mod/fabric-api/versions/
-fabric-api = "0.138.4+1.21.10"
+fabric-api = "0.141.2+1.21.11"
 # Check this on https://modrinth.com/mod/fabric-language-kotlin/versions/
 fabric-language-kotlin = "1.13.8+kotlin.2.3.0"
 # Check this on https://maven.wispforest.io/#/releases/io/wispforest/owo-lib/
-owo = "0.12.24+1.21.9"
+owo = "0.13.0+1.21.11"
 # Check this on https://maven.kosmx.dev/dev/kosmx/kowoconfig/ksp-owo-config/
 kspOwoConfig = "0.2.0"
 ##########################################################################
