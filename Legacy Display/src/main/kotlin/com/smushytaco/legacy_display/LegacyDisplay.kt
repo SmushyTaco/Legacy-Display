@@ -12,13 +12,14 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.resources.Identifier
 import java.util.*
+import kotlin.time.Duration.Companion.milliseconds
 object LegacyDisplay : ClientModInitializer {
-    val OWO_LIB_LEGACY_BACKGROUND = Surface { context: OwoUIGraphics, component: ParentUIComponent -> Screen.renderMenuBackgroundTexture(context, Screen.MENU_BACKGROUND, component.x(), component.y(), 0.0F, 0.0F, component.width(), component.height()) }
+    val OWO_LIB_LEGACY_BACKGROUND = Surface { context: OwoUIGraphics, component: ParentUIComponent -> Screen.extractMenuBackgroundTexture(context, Screen.MENU_BACKGROUND, component.x(), component.y(), 0.0F, 0.0F, component.width(), component.height()) }
     private fun startRepeatingJob(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
                 chunkUpdateCount = Minecraft.getInstance().level?.chunkUpdaters?.size ?: 0
-                delay(125L)
+                delay(125L.milliseconds)
             }
         }
     }
@@ -39,7 +40,7 @@ object LegacyDisplay : ClientModInitializer {
         HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "hud")) { context, _ ->
             if (Minecraft.getInstance().debugOverlay.showDebugScreen()) return@addLast
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
-                context.drawString(
+                context.text(
                     Minecraft.getInstance().gui.font,
                     "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",
                     2, 2, TEXT_COLOR)
@@ -54,7 +55,7 @@ object LegacyDisplay : ClientModInitializer {
                 } else {
                     if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
                 }
-                context.drawString(
+                context.text(
                     Minecraft.getInstance().gui.font,
                     "${if (config.enableFPSDisplay) "${CurrentFPSMixin.getCurrentFPS()} fps" else ""}${if (config.enableFPSDisplay && config.enableChunkUpdateDisplay) ", " else ""}${if (config.enableChunkUpdateDisplay) "$chunkUpdateCount chunk update${if (chunkUpdateCount != 1) "s" else ""}" else ""}",
                     2, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14 else 2, TEXT_COLOR
@@ -72,7 +73,7 @@ object LegacyDisplay : ClientModInitializer {
                         if (i != coordinateList.indices.last - 1) formattedCoordinates.append(", ")
                     }
                 }
-                context.drawString(
+                context.text(
                     Minecraft.getInstance().gui.font, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
                     2, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26 else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14 else 2, TEXT_COLOR)
             }
