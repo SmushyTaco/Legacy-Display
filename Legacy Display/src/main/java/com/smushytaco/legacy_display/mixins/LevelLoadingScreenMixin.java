@@ -19,15 +19,15 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     private float smoothedProgress;
     protected LevelLoadingScreenMixin(Component title) { super(title); }
     @WrapWithCondition(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/LevelLoadingScreen;extractChunksForRendering(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIIILnet/minecraft/server/level/progress/ChunkLoadStatusView;)V"))
-    private boolean hookRenderDrawChunkMap(GuiGraphicsExtractor context, int centerX, int centerY, int chunkLength, int chunkGap, ChunkLoadStatusView map) { return !LegacyDisplay.INSTANCE.getConfig().getEnableLegacyLoadingScreen(); }
+    private boolean hookRenderDrawChunkMap(GuiGraphicsExtractor graphics, int xCenter, int yCenter, int size, int margin, ChunkLoadStatusView statusView) { return !LegacyDisplay.INSTANCE.getConfig().getEnableLegacyLoadingScreen(); }
     @WrapWithCondition(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/LevelLoadingScreen;drawProgressBar(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIIIF)V"))
-    private boolean hookDrawLoadingBar(LevelLoadingScreen instance, GuiGraphicsExtractor context, int x1, int y1, int width, int height, float delta) { return !LegacyDisplay.INSTANCE.getConfig().getEnableLegacyLoadingScreen(); }
+    private boolean hookDrawLoadingBar(LevelLoadingScreen instance, GuiGraphicsExtractor graphics, int left, int top, int width, int height, float progress) { return !LegacyDisplay.INSTANCE.getConfig().getEnableLegacyLoadingScreen(); }
     @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;centeredText(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-    private void hookRender(GuiGraphicsExtractor instance, Font textRenderer, Component text, int centerX, int y, int color, Operation<Void> original) {
+    private void hookRender(GuiGraphicsExtractor instance, Font font, Component text, int x, int y, int color, Operation<Void> original) {
         if (LegacyDisplay.INSTANCE.getConfig().getEnableLegacyLoadingScreen()) {
             LevelLoadingScreenMixinLogic.INSTANCE.hookRenderLogic(instance, smoothedProgress, width, height, this.font);
         } else {
-            original.call(instance, textRenderer, text, centerX, y, color);
+            original.call(instance, font, text, x, y, color);
         }
     }
 }

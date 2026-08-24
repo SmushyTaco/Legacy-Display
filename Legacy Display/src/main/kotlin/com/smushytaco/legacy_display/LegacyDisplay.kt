@@ -41,7 +41,7 @@ object LegacyDisplay : ClientModInitializer {
             if (Minecraft.getInstance().debugOverlay.showDebugScreen()) return@addLast
             if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) {
                 context.text(
-                    Minecraft.getInstance().gui.font,
+                    Minecraft.getInstance().gui.hud.font,
                     "${if (config.enableMinecraftKeywordDisplay) "Minecraft" else ""}${if (config.enableVersionDisplay && config.enableMinecraftKeywordDisplay) " " else ""}${if (config.enableVersionDisplay) minecraftVersion else ""}",
                     2, 2, TEXT_COLOR)
             }
@@ -56,7 +56,7 @@ object LegacyDisplay : ClientModInitializer {
                     if (LegacyDisplay::coroutine.isInitialized && coroutine.isActive) coroutine.cancel()
                 }
                 context.text(
-                    Minecraft.getInstance().gui.font,
+                    Minecraft.getInstance().gui.hud.font,
                     "${if (config.enableFPSDisplay) "${CurrentFPSMixin.getCurrentFPS()} fps" else ""}${if (config.enableFPSDisplay && config.enableChunkUpdateDisplay) ", " else ""}${if (config.enableChunkUpdateDisplay) "$chunkUpdateCount chunk update${if (chunkUpdateCount != 1) "s" else ""}" else ""}",
                     2, if (config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) 14 else 2, TEXT_COLOR
                 )
@@ -74,7 +74,7 @@ object LegacyDisplay : ClientModInitializer {
                     }
                 }
                 context.text(
-                    Minecraft.getInstance().gui.font, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
+                    Minecraft.getInstance().gui.hud.font, "${if (config.enablePositionKeywordInCoordinateDisplay) "Position: " else ""}$formattedCoordinates",
                     2, if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) && (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 26 else if ((config.enableMinecraftKeywordDisplay || config.enableVersionDisplay) xor (config.enableFPSDisplay || config.enableChunkUpdateDisplay)) 14 else 2, TEXT_COLOR)
             }
         }

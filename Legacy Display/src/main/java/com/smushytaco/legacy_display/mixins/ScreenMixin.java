@@ -4,9 +4,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.smushytaco.legacy_display.LegacyDisplay;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.screens.MultiplayerOptionsScreen;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.ShareToLanScreen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.options.OptionsScreen;
 import net.minecraft.client.gui.screens.options.SkinCustomizationScreen;
@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Screen.class)
 public abstract class ScreenMixin {
     @WrapOperation(method = "extractMenuBackground(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;extractMenuBackgroundTexture(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/resources/Identifier;IIFFII)V"))
-    private void hookRenderDarkening(GuiGraphicsExtractor context, Identifier texture, int x, int y, float u, float v, int width, int height, Operation<Void> original) {
+    private void hookRenderDarkening(GuiGraphicsExtractor graphics, Identifier menuBackground, int x, int y, float u, float v, int width, int height, Operation<Void> original) {
         Screen screen = (Screen) (Object) this;
-        original.call(context, LegacyDisplay.INSTANCE.getConfig().getEnableLegacyDirtScreen() && !(screen instanceof PauseScreen || screen instanceof OptionsScreen || screen instanceof ShareToLanScreen || screen instanceof AdvancementsScreen || screen instanceof ConfirmLinkScreen || screen instanceof SkinCustomizationScreen || screen instanceof SoundOptionsScreen) ? Screen.MENU_BACKGROUND : texture, x, y, u, v, width, height);
+        original.call(graphics, LegacyDisplay.INSTANCE.getConfig().getEnableLegacyDirtScreen() && !(screen instanceof PauseScreen || screen instanceof OptionsScreen || screen instanceof MultiplayerOptionsScreen || screen instanceof AdvancementsScreen || screen instanceof ConfirmLinkScreen || screen instanceof SkinCustomizationScreen || screen instanceof SoundOptionsScreen) ? Screen.MENU_BACKGROUND : menuBackground, x, y, u, v, width, height);
     }
 }
